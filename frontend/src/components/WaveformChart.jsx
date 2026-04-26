@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-const COLORS = { Cz: "#7dd3fc", C3: "#a78bfa", C4: "#fb7185" };
+const COLORS = { Cz: "#00ff00", C3: "#00aa00", C4: "#008800" };
 
 /**
  * Lightweight canvas-based scrolling EEG waveform.
@@ -19,7 +19,7 @@ export default function WaveformChart({ channels = {}, fs = 200, height = 220 })
     const h = (canvas.height = height * devicePixelRatio);
     ctx.scale(devicePixelRatio, devicePixelRatio);
 
-    ctx.fillStyle = "#0b0f17";
+    ctx.fillStyle = "#000000";
     ctx.fillRect(0, 0, canvas.clientWidth, height);
 
     const labels = Object.keys(channels);
@@ -31,7 +31,7 @@ export default function WaveformChart({ channels = {}, fs = 200, height = 220 })
       if (!data.length) return;
       // baseline
       const yMid = idx * rowH + rowH / 2;
-      ctx.strokeStyle = "#1a2230";
+      ctx.strokeStyle = "#333333";
       ctx.beginPath();
       ctx.moveTo(0, yMid);
       ctx.lineTo(canvas.clientWidth, yMid);
@@ -41,7 +41,7 @@ export default function WaveformChart({ channels = {}, fs = 200, height = 220 })
       const yScale = (rowH * 0.4) / maxAbs;
       const xStep = canvas.clientWidth / data.length;
 
-      ctx.strokeStyle = COLORS[label] || "#7dd3fc";
+      ctx.strokeStyle = COLORS[label] || "#00ff00";
       ctx.lineWidth = 1.2;
       ctx.beginPath();
       data.forEach((v, i) => {

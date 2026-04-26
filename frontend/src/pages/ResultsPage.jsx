@@ -26,7 +26,7 @@ export default function ResultsPage() {
       .catch(() => setLoading(false));
   }, [id]);
 
-  if (loading) return <div className="text-slate-400">Loading…</div>;
+  if (loading) return <div className="text-terminal-dim font-terminal">Loading…</div>;
   if (!session) {
     return (
       <div className="card">
@@ -58,14 +58,14 @@ export default function ResultsPage() {
         <h3 className="font-semibold mb-3">Theta/Beta Ratio + Score over Time</h3>
         <ResponsiveContainer width="100%" height={260}>
           <LineChart data={tbSeries}>
-            <CartesianGrid stroke="#1f2937" strokeDasharray="3 3" />
-            <XAxis dataKey="t" stroke="#64748b" fontSize={11} tickFormatter={(v) => v.toFixed(0) + "s"} />
-            <YAxis yAxisId="l" stroke="#64748b" fontSize={11} />
-            <YAxis yAxisId="r" orientation="right" stroke="#64748b" fontSize={11} domain={[0, 100]} />
-            <Tooltip contentStyle={{ background: "#0b0f17", border: "1px solid #1f2937" }} />
+            <CartesianGrid stroke="#113311" strokeDasharray="3 3" />
+            <XAxis dataKey="t" stroke="#00aa00" fontSize={11} tickFormatter={(v) => v.toFixed(0) + "s"} />
+            <YAxis yAxisId="l" stroke="#00aa00" fontSize={11} />
+            <YAxis yAxisId="r" orientation="right" stroke="#00aa00" fontSize={11} domain={[0, 100]} />
+            <Tooltip contentStyle={{ background: "#000000", border: "1px solid #00aa00", color: "#00ff00" }} />
             <Legend wrapperStyle={{ fontSize: 11 }} />
-            <Line yAxisId="l" dataKey="theta_beta" stroke="#a855f7" name="θ/β" dot={false} strokeWidth={2} isAnimationActive={false} />
-            <Line yAxisId="r" dataKey="score" stroke="#22c55e" name="score %" dot={false} strokeWidth={2} isAnimationActive={false} />
+            <Line yAxisId="l" dataKey="theta_beta" stroke="#00ff00" name="θ/β" dot={false} strokeWidth={2} isAnimationActive={false} />
+            <Line yAxisId="r" dataKey="score" stroke="#00aa00" name="score %" dot={false} strokeWidth={2} isAnimationActive={false} />
           </LineChart>
         </ResponsiveContainer>
       </div>

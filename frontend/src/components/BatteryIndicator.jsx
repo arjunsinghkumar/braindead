@@ -7,7 +7,7 @@ export default function BatteryIndicator({ percent }) {
   const pct = known ? Math.max(0, Math.min(100, Math.round(percent))) : null;
 
   const color =
-    pct == null ? "bg-slate-600/40 text-slate-300"
+    pct == null ? "bg-ink-700/60 text-terminal-text"
     : pct >= 60 ? "bg-good/20 text-good"
     : pct >= 25 ? "bg-warn/20 text-warn"
     : "bg-bad/20 text-bad";

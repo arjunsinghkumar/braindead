@@ -81,6 +81,46 @@ npm run build                     # → frontend/dist
 # Then re-run `python app.py` — Flask will serve dist/ at /
 ```
 
+## Desktop app (Electron)
+
+This repo includes a lightweight Electron wrapper in `desktop/` so you can run the UI
+as a desktop window while you iterate.
+
+### Dev mode (fast iteration)
+
+Start backend + frontend as usual, then open the Vite URL inside Electron:
+
+```bash
+cd backend
+source .venv/bin/activate
+PORT=5001 python app.py
+```
+
+```bash
+cd frontend
+npx vite --host 127.0.0.1 --port 5173
+```
+
+```bash
+cd desktop
+npm install
+npm run dev
+```
+
+### “Prod-ish” mode (serves `frontend/dist` from Flask)
+
+Build the frontend, run Flask, then open it inside Electron:
+
+```bash
+cd frontend
+npm run build
+cd ../backend
+source .venv/bin/activate
+PORT=5001 python app.py
+cd ../desktop
+npm run start
+```
+
 ## Configuration
 
 - `NEUROFLOW_DB` — override SQLite path (default `backend/neuroflow.db`).

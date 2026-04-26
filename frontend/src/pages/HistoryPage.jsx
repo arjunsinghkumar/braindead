@@ -31,7 +31,7 @@ export default function HistoryPage() {
         {stats?.focus_sessions?.length ? (
           <HistoryChart sessions={stats.focus_sessions} />
         ) : (
-          <p className="text-sm text-slate-400">No focus sessions yet.</p>
+          <p className="text-sm text-terminal-dim font-terminal">No focus sessions yet.</p>
         )}
       </div>
 
@@ -39,7 +39,7 @@ export default function HistoryPage() {
         <h3 className="font-semibold mb-3">All Sessions</h3>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="text-slate-400 text-xs uppercase">
+            <thead className="text-terminal-dim text-xs uppercase font-terminal">
               <tr>
                 <th className="text-left py-2">#</th>
                 <th className="text-left py-2">Date</th>
@@ -69,7 +69,7 @@ export default function HistoryPage() {
                   <td className="py-2">{s.trend || "—"}</td>
                   <td className="py-2 text-right">
                     {s.mode === "focus" && (
-                      <Link to={`/results?id=${s.id}`} className="text-accent-400 hover:underline mr-2">
+                      <Link to={`/results?id=${s.id}`} className="text-terminal-accent hover:underline mr-2 font-terminal">
                         view
                       </Link>
                     )}
@@ -81,7 +81,7 @@ export default function HistoryPage() {
               ))}
               {!items.length && (
                 <tr>
-                  <td colSpan={8} className="py-6 text-center text-slate-400">
+                  <td colSpan={8} className="py-6 text-center text-terminal-dim font-terminal">
                     No sessions yet.
                   </td>
                 </tr>

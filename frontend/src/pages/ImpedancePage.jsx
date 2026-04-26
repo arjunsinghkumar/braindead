@@ -8,7 +8,7 @@ const STATUS_TEXT = {
   good: { color: "text-good", label: "Good" },
   marginal: { color: "text-warn", label: "Marginal" },
   bad: { color: "text-bad", label: "Bad" },
-  unknown: { color: "text-slate-400", label: "—" },
+  unknown: { color: "text-terminal-dim", label: "—" },
 };
 
 export default function ImpedancePage({ board }) {
@@ -42,7 +42,7 @@ export default function ImpedancePage({ board }) {
       <div className="flex items-baseline justify-between">
         <div>
           <h1 className="text-2xl font-bold">Stage 1 — Impedance Check</h1>
-          <p className="text-slate-400 text-sm">
+          <p className="text-terminal-dim text-sm font-terminal">
             Verify each electrode has good scalp contact before proceeding.
           </p>
         </div>
@@ -67,7 +67,7 @@ export default function ImpedancePage({ board }) {
         <div className="card lg:col-span-1">
           <h3 className="font-semibold mb-3">Electrode Map</h3>
           <HeadDiagram statuses={results} />
-          <p className="text-xs text-slate-400 mt-3 text-center">
+          <p className="text-xs text-terminal-dim mt-3 text-center font-terminal">
             Top-down view. A1/A2 are ear references.
           </p>
         </div>
@@ -97,7 +97,7 @@ export default function ImpedancePage({ board }) {
         <h3 className="font-semibold mb-3">Live Waveform (1s window)</h3>
         <WaveformChart channels={waveform.channels} fs={waveform.fs} height={220} />
         {!running && Object.keys(waveform.channels).length === 0 && (
-          <p className="text-xs text-slate-400 mt-2">Press “Run Check” to stream live EEG.</p>
+          <p className="text-xs text-terminal-dim mt-2 font-terminal">Press “Run Check” to stream live EEG.</p>
         )}
       </div>
     </div>
@@ -107,7 +107,7 @@ export default function ImpedancePage({ board }) {
 function Row({ k, v }) {
   return (
     <div className="flex justify-between">
-      <span className="text-slate-400">{k}</span>
+      <span className="text-terminal-dim font-terminal">{k}</span>
       <span>{v}</span>
     </div>
   );

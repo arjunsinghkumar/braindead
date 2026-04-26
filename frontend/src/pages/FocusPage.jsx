@@ -79,27 +79,27 @@ export default function FocusPage({ board }) {
       <div className="flex items-baseline justify-between">
         <div>
           <h1 className="text-2xl font-bold">Stage 3 — Focus Training</h1>
-          <p className="text-slate-400 text-sm">
+          <p className="text-terminal-dim text-sm font-terminal">
             Theta/beta neurofeedback at Cz (Lubar/Monastra protocol).
           </p>
         </div>
         <div className="flex gap-2 items-center">
           {phase === "idle" || phase === "done" ? (
             <>
-              <label className="text-xs text-slate-400 flex items-center gap-2">
+              <label className="text-xs text-terminal-dim font-terminal flex items-center gap-2">
                 Duration
                 <input
                   type="number" min={1} max={30} value={duration}
                   onChange={(e) => setDuration(Number(e.target.value))}
-                  className="w-16 bg-ink-700 px-2 py-1 rounded text-sm"
+                  className="w-16 bg-ink-800 px-2 py-1 rounded text-sm font-mono border border-terminal-accent/60 focus:outline-none focus:ring-2 focus:ring-terminal-accent/30"
                 /> min
               </label>
-              <label className="text-xs text-slate-400 flex items-center gap-2">
+              <label className="text-xs text-terminal-dim font-terminal flex items-center gap-2">
                 Sensitivity
                 <input
                   type="number" step={0.1} min={-1} max={1} value={sensitivity}
                   onChange={(e) => setSensitivity(Number(e.target.value))}
-                  className="w-16 bg-ink-700 px-2 py-1 rounded text-sm"
+                  className="w-16 bg-ink-800 px-2 py-1 rounded text-sm font-mono border border-terminal-accent/60 focus:outline-none focus:ring-2 focus:ring-terminal-accent/30"
                 />
               </label>
               <button className="btn-primary" onClick={start} disabled={!board?.connected}>
@@ -114,10 +114,10 @@ export default function FocusPage({ board }) {
 
       {phase === "calibrating" && (
         <div className="card text-center">
-          <div className="text-xs uppercase text-slate-400 tracking-widest">Calibrating</div>
+          <div className="text-xs uppercase text-terminal-dim tracking-widest font-terminal">Calibrating</div>
           <div className="text-xl mt-2">Sit still. Breathe normally.</div>
           <div className="text-5xl mt-4 font-mono">{cal.remaining.toFixed(0)}s</div>
-          <div className="text-xs text-slate-400 mt-2 font-mono">
+          <div className="text-xs text-terminal-dim mt-2 font-mono">
             current θ/β = {cal.theta_beta.toFixed(2)}
           </div>
         </div>
@@ -130,10 +130,10 @@ export default function FocusPage({ board }) {
             <div className="mt-8 w-full px-4">
               <ScoreBar score={score} />
             </div>
-            <div className="mt-3 text-xs text-slate-400 font-mono">
+            <div className="mt-3 text-xs text-terminal-dim font-mono">
               θ/β = {thetaBeta.toFixed(2)} · θ = {bands.theta.toFixed(1)}µV² · β = {bands.beta.toFixed(1)}µV²
             </div>
-            <div className="mt-1 text-xs text-slate-400 font-mono">
+            <div className="mt-1 text-xs text-terminal-dim font-mono">
               {Math.floor(remaining / 60)}m {Math.floor(remaining % 60)}s remaining
             </div>
           </div>
@@ -172,14 +172,14 @@ export default function FocusPage({ board }) {
       {phase === "idle" && !savedSession && (
         <div className="card">
           <h3 className="font-semibold mb-2">How it works</h3>
-          <ol className="list-decimal list-inside text-sm text-slate-300 space-y-1">
+          <ol className="list-decimal list-inside text-sm text-terminal-text font-terminal space-y-1">
             <li>30-second calibration measures your baseline theta/beta ratio at Cz.</li>
             <li>During training, score is computed every 250ms — lower θ/β = higher score.</li>
             <li>The orb glows and a tone gets louder when you're focused.</li>
             <li>Session is saved automatically when complete (or stopped early).</li>
           </ol>
-          <p className="text-xs text-slate-500 mt-3">
-            Reference: typical adult θ/β at Cz ~ 2.0–3.0; elevated values >3.5 are
+          <p className="text-xs text-terminal-dim mt-3 font-terminal">
+            Reference: typical adult θ/β at Cz ~ 2.0–3.0; elevated values {"\u003e"}3.5 are
             associated with ADHD in clinical literature, but this tool cannot diagnose.
           </p>
         </div>
@@ -191,7 +191,7 @@ export default function FocusPage({ board }) {
 function Metric({ label, value }) {
   return (
     <div className="bg-ink-700/60 rounded-lg p-3">
-      <div className="text-[11px] uppercase tracking-wider text-slate-400">{label}</div>
+      <div className="text-[11px] uppercase tracking-wider text-terminal-dim font-terminal">{label}</div>
       <div className="font-mono text-base mt-0.5">{value}</div>
     </div>
   );

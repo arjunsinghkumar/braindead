@@ -5,23 +5,35 @@ export default {
   theme: {
     extend: {
       colors: {
+        background: "#000000",
+        foreground: "#00ff00",
+        terminal: {
+          bg: "#000000",
+          text: "#00ff00",
+          accent: "#00aa00",
+          dim: "#008800",
+        },
         ink: {
-          900: "#0b0f17",
-          800: "#111722",
-          700: "#1a2230",
-          600: "#252f40",
+          900: "#000000",
+          800: "#111111",
+          700: "#222222",
+          600: "#333333",
         },
         accent: {
-          400: "#7dd3fc",
-          500: "#38bdf8",
-          600: "#0ea5e9",
+          400: "#00ff00",
+          500: "#00dd00",
+          600: "#00aa00",
         },
-        good: "#22c55e",
-        warn: "#eab308",
-        bad: "#ef4444",
+        good: "#00ff00",
+        warn: "#ffff00",
+        bad: "#ff0000",
+      },
+      fontFamily: {
+        terminal: ['"Courier New"', 'monospace'],
       },
       boxShadow: {
-        glow: "0 0 60px rgba(56,189,248,0.45)",
+        glow: "0 0 20px rgba(0,255,0,0.5)",
+        terminal: "0 0 10px rgba(0,255,0,0.3)",
       },
     },
   },

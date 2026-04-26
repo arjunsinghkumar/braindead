@@ -24,7 +24,7 @@ export default function ConnectPage({ board, battery, onConnect, onDisconnect })
           <h2 className="font-semibold text-lg mb-3">Electrode Montage</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
-              <thead className="text-slate-400">
+              <thead className="text-terminal-dim font-terminal">
                 <tr>
                   <th className="text-left py-1.5 font-medium">Lead</th>
                   <th className="text-left py-1.5 font-medium">Position</th>
@@ -36,13 +36,13 @@ export default function ConnectPage({ board, battery, onConnect, onDisconnect })
                   <tr key={r[0]} className="border-t border-ink-700">
                     <td className="py-1.5">{r[0]}</td>
                     <td className="py-1.5">{r[1]}</td>
-                    <td className="py-1.5 text-slate-400 font-sans">{r[2]}</td>
+                    <td className="py-1.5 text-terminal-dim font-terminal">{r[2]}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <p className="text-xs text-slate-400 mt-3">
+          <p className="text-xs text-terminal-dim mt-3 font-terminal">
             All 4 DIP switches must be DOWN (monopolar EEG against shared REF).
           </p>
         </div>

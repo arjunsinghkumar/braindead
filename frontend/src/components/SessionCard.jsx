@@ -6,7 +6,7 @@ export default function SessionCard({ session }) {
     <div className="card">
       <div className="flex items-baseline justify-between mb-3">
         <h3 className="font-semibold">Session #{session.id}</h3>
-        <span className="text-xs text-slate-400">
+        <span className="text-xs text-terminal-dim font-terminal">
           {new Date(session.created_at).toLocaleString()}
         </span>
       </div>
@@ -27,7 +27,7 @@ export default function SessionCard({ session }) {
 function Metric({ label, value }) {
   return (
     <div className="bg-ink-700/60 rounded-lg p-3">
-      <div className="text-[11px] uppercase tracking-wider text-slate-400">{label}</div>
+      <div className="text-[11px] uppercase tracking-wider text-terminal-dim font-terminal">{label}</div>
       <div className="font-mono text-base mt-0.5">{value}</div>
     </div>
   );

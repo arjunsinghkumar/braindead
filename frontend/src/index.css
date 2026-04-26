@@ -7,35 +7,42 @@
 }
 
 body {
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+  background-color: #000000;
+  color: #00ff00;
+  font-family: 'Courier New', monospace;
+  margin: 0;
+  padding: 0;
 }
 
 @layer components {
   .card {
-    @apply bg-ink-800 border border-ink-700 rounded-2xl p-5 shadow-lg;
+    @apply bg-ink-800 border border-terminal-accent rounded-lg p-5 shadow-terminal;
   }
   .btn {
-    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg
-           font-medium transition border border-transparent;
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded
+           font-medium transition border border-terminal-accent;
+    background-color: #111111;
+    color: #00ff00;
   }
   .btn-primary {
-    @apply btn bg-accent-600 hover:bg-accent-500 text-white disabled:opacity-40
-           disabled:cursor-not-allowed;
+    @apply btn hover:bg-terminal-accent hover:text-black;
   }
   .btn-ghost {
-    @apply btn bg-ink-700 hover:bg-ink-600 text-slate-100;
+    @apply btn bg-ink-700 hover:bg-ink-600 text-terminal-text;
   }
   .btn-danger {
-    @apply btn bg-rose-600 hover:bg-rose-500 text-white;
+    @apply btn bg-red-900 hover:bg-red-700 text-red-400;
   }
   .pill {
-    @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold;
+    @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold;
+    background-color: #222222;
+    color: #00ff00;
+    border: 1px solid #00aa00;
   }
 }
 
 .focus-orb {
-  background: radial-gradient(circle at 35% 30%, #7dd3fc, #0ea5e9 60%, #082f49);
+  background: radial-gradient(circle at 35% 30%, #00ff00, #00aa00 60%, #004400);
   transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
 }
 

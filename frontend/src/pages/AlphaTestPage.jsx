@@ -57,7 +57,7 @@ export default function AlphaTestPage({ board }) {
       <div className="flex items-baseline justify-between">
         <div>
           <h1 className="text-2xl font-bold">Stage 2 — Eyes-Closed Alpha</h1>
-          <p className="text-slate-400 text-sm">
+          <p className="text-terminal-dim text-sm font-terminal">
             Verify electrodes detect real EEG via the alpha blocking response.
           </p>
         </div>
@@ -80,7 +80,7 @@ export default function AlphaTestPage({ board }) {
 
       {(running || phase) && (
         <div className="card text-center">
-          <div className="text-xs uppercase text-slate-400 tracking-widest">
+          <div className="text-xs uppercase text-terminal-dim tracking-widest font-terminal">
             {copy?.title || ""}
           </div>
           <div className="text-7xl my-4 font-mono">⊕</div>
@@ -96,11 +96,11 @@ export default function AlphaTestPage({ board }) {
           <h3 className="font-semibold mb-3">Live Alpha Power (Cz)</h3>
           <ResponsiveContainer width="100%" height={220}>
             <LineChart data={series}>
-              <CartesianGrid stroke="#1f2937" strokeDasharray="3 3" />
-              <XAxis dataKey="t" stroke="#64748b" fontSize={11} />
-              <YAxis stroke="#64748b" fontSize={11} />
-              <Tooltip contentStyle={{ background: "#0b0f17", border: "1px solid #1f2937" }} />
-              <Line type="monotone" dataKey="alpha" stroke="#22c55e" dot={false} strokeWidth={2} isAnimationActive={false} />
+              <CartesianGrid stroke="#113311" strokeDasharray="3 3" />
+              <XAxis dataKey="t" stroke="#00aa00" fontSize={11} />
+              <YAxis stroke="#00aa00" fontSize={11} />
+              <Tooltip contentStyle={{ background: "#000000", border: "1px solid #00aa00", color: "#00ff00" }} />
+              <Line type="monotone" dataKey="alpha" stroke="#00ff00" dot={false} strokeWidth={2} isAnimationActive={false} />
             </LineChart>
           </ResponsiveContainer>
         </div>
@@ -114,15 +114,15 @@ export default function AlphaTestPage({ board }) {
                   { name: "Closed", power: Number(result.eyes_closed_alpha.toFixed(3)) },
                 ]}
               >
-                <CartesianGrid stroke="#1f2937" strokeDasharray="3 3" />
-                <XAxis dataKey="name" stroke="#64748b" />
-                <YAxis stroke="#64748b" fontSize={11} />
-                <Tooltip contentStyle={{ background: "#0b0f17", border: "1px solid #1f2937" }} />
-                <Bar dataKey="power" fill="#38bdf8" />
+                <CartesianGrid stroke="#113311" strokeDasharray="3 3" />
+                <XAxis dataKey="name" stroke="#00aa00" />
+                <YAxis stroke="#00aa00" fontSize={11} />
+                <Tooltip contentStyle={{ background: "#000000", border: "1px solid #00aa00", color: "#00ff00" }} />
+                <Bar dataKey="power" fill="#00aa00" />
               </BarChart>
             </ResponsiveContainer>
           ) : (
-            <div className="text-sm text-slate-400 text-center py-16">
+            <div className="text-sm text-terminal-dim text-center py-16 font-terminal">
               Results will appear here after the test completes.
             </div>
           )}
@@ -143,7 +143,7 @@ export default function AlphaTestPage({ board }) {
               ratio = {result.ratio.toFixed(2)} (closed / open)
             </span>
           </div>
-          <p className="text-sm text-slate-400 mt-2">
+          <p className="text-sm text-terminal-dim mt-2 font-terminal">
             {result.result === "pass" && "Clear alpha blocking response detected — electrodes working well."}
             {result.result === "marginal" && "Weak alpha response — consider reseating Cz electrode."}
             {result.result === "fail" && "No alpha response detected. Recheck electrode contact and try again."}

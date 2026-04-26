@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroFlow - Initializing</title>
+    <style>
+        body {
+            background: #000;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            max-width: 800px;
+        }
+        .title {
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #00ff00;
+        }
+        .status {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+        .progress {
+            width: 100%;
+            height: 20px;
+            background: #111;
+            border: 1px solid #00ff00;
+            margin-bottom: 20px;
+        }
+        .progress-bar {
+            height: 100%;
+            background: #00ff00;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        .log {
+            text-align: left;
+            background: #111;
+            padding: 10px;
+            border: 1px solid #00ff00;
+            height: 200px;
+            overflow-y: auto;
+            font-size: 0.9em;
+        }
+        .cursor {
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">NEUROFLOW SYSTEM INITIALIZATION</div>
+        <div class="status">Establishing neural link...<span class="cursor">_</span></div>
+        <div class="progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="log" id="log">
+[INIT] Booting NeuroFlow v0.1.0<br>
+[INIT] Loading brainwave processors...<br>
+[INIT] Calibrating EEG sensors...<br>
+[INIT] Establishing secure connection...<br>
+        </div>
+    </div>
+
+    <script>
+        const log = document.getElementById('log');
+        const progressBar = document.getElementById('progressBar');
+        const status = document.querySelector('.status');
+
+        const messages = [
+            "Scanning neural pathways...",
+            "Decrypting brain signals...",
+            "Synchronizing alpha waves...",
+            "Initializing focus matrix...",
+            "Loading session database...",
+            "Connecting to OpenBCI Ganglion...",
+            "Calibrating impedance checks...",
+            "Activating neurofeedback loop...",
+            "System ready. Welcome to NeuroFlow."
+        ];
+
+        let currentMessage = 0;
+        let progress = 0;
+
+        function addLog(message) {
+            log.innerHTML += message + '<br>';
+            log.scrollTop = log.scrollHeight;
+        }
+
+        function updateProgress() {
+            progress += Math.random() * 15 + 5; // Random progress between 5-20%
+            if (progress > 100) progress = 100;
+            progressBar.style.width = progress + '%';
+
+            if (currentMessage < messages.length) {
+                status.textContent = messages[currentMessage] + '_';
+                addLog('[SYS] ' + messages[currentMessage]);
+                currentMessage++;
+            }
+
+            if (progress < 100) {
+                setTimeout(updateProgress, Math.random() * 1000 + 500); // 0.5-1.5s delay
+            } else {
+                status.textContent = 'Neural link established. Launching interface...';
+                setTimeout(() => {
+                    // Signal to main process that loading is complete
+                    window.postMessage({ type: 'loading-complete' }, '*');
+                }, 1000);
+            }
+        }
+
+        // Start the loading sequence
+        setTimeout(updateProgress, 1000);
+    </script>
+</body>
+</html></content>
+<parameter name="filePath">/Users/arjunsingh/Desktop/claudecode/braindead/desktop/loader.html

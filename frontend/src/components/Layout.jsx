@@ -13,14 +13,14 @@ const tabs = [
 export default function Layout({ children, board, battery }) {
   const { connected } = useSocket();
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="border-b border-ink-700 bg-ink-800/70 backdrop-blur">
+    <div className="min-h-screen flex flex-col bg-terminal-bg text-terminal-text">
+      <header className="border-b border-terminal-accent bg-black/70 backdrop-blur">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl focus-orb shadow-glow" />
             <div>
-              <div className="font-bold tracking-wide">NeuroFlow</div>
-              <div className="text-xs text-slate-400">
+              <div className="font-bold tracking-wide font-terminal">NeuroFlow</div>
+              <div className="text-xs text-terminal-dim">
                 OpenBCI Ganglion Neurofeedback
               </div>
             </div>
@@ -32,10 +32,10 @@ export default function Layout({ children, board, battery }) {
                 to={t.to}
                 end={t.to === "/"}
                 className={({ isActive }) =>
-                  `px-3 py-1.5 rounded-md transition ${
+                  `px-3 py-1.5 rounded-md transition font-terminal ${
                     isActive
-                      ? "bg-accent-600 text-white"
-                      : "text-slate-300 hover:bg-ink-700"
+                      ? "bg-terminal-accent text-black"
+                      : "text-terminal-text hover:bg-ink-700"
                   }`
                 }
               >
@@ -55,7 +55,7 @@ export default function Layout({ children, board, battery }) {
               className={`pill ${
                 board?.connected
                   ? "bg-good/20 text-good"
-                  : "bg-slate-600/40 text-slate-300"
+                  : "bg-ink-700/60 text-terminal-text"
               }`}
             >
               ● board {board?.connected ? "Ganglion" : "off"}
@@ -65,7 +65,7 @@ export default function Layout({ children, board, battery }) {
         </div>
       </header>
       <main className="flex-1 max-w-6xl w-full mx-auto px-6 py-6">{children}</main>
-      <footer className="border-t border-ink-700 text-xs text-slate-400 py-3">
+      <footer className="border-t border-terminal-accent/60 text-xs text-terminal-dim py-3 font-terminal">
         <div className="max-w-6xl mx-auto px-6">
           Educational tool — not a medical device. Theta/beta measurements cannot
           diagnose ADHD or any condition.
