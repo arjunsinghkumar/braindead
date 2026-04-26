@@ -1,7 +1,8 @@
-"""BrainFlow OpenBCI Ganglion wrapper for NeuroFlow.
+"""BrainFlow OpenBCI Ganglion wrapper.
 
-Handles BLE pairing/connect (via the BLED112 dongle's serial port),
-streaming, and channel mapping. No simulation paths.
+Supports two connection modes:
+- BLED112 dongle (serial port) via BrainFlow `GANGLION_BOARD`
+- Native BLE (macOS / Linux) via BrainFlow `GANGLION_NATIVE_BOARD` (uses MAC address)
 """
 from __future__ import annotations
 import glob
@@ -62,24 +63,31 @@ class BoardManager:
         self.serial_port: str | None = None
         self._lock = threading.Lock()
 
-    def connect(self, serial_port: str) -> dict:
-        """Pair + connect to a Ganglion via the BLED112 dongle on `serial_port`.
+    def connect(self, *, serial_port: str | None = None, mac_address: str | None = None) -> dict:
+        """Connect to a Ganglion.
 
-        BrainFlow handles BLE discovery + pairing internally inside
-        `prepare_session()`. Raises on failure.
+        - If `mac_address` is provided, uses BrainFlow native BLE mode.
+        - Otherwise requires `serial_port` for the BLED112 dongle mode.
         """
-        if not serial_port:
-            raise ValueError(
-                "A serial port is required (BLED112 dongle, e.g. "
-                "/dev/cu.usbmodem* on macOS, /dev/ttyACM0 on Linux, COM4 on Windows)."
-            )
         if self.connected:
             self.disconnect()
 
         params = BrainFlowInputParams()
-        params.serial_port = serial_port
-        self.serial_port = serial_port
-        self.board_id = BoardIds.GANGLION_BOARD.value
+        self.serial_port = None
+
+        if mac_address:
+            # Native BLE: expects device paired via OS Bluetooth.
+            params.mac_address = mac_address
+            self.board_id = BoardIds.GANGLION_NATIVE_BOARD.value
+        else:
+            if not serial_port:
+                raise ValueError(
+                    "Missing connection details. Provide mac_address (native BLE) or "
+                    "serial_port (BLED112 dongle)."
+                )
+            params.serial_port = serial_port
+            self.serial_port = serial_port
+            self.board_id = BoardIds.GANGLION_BOARD.value
 
         BoardShim.disable_board_logger()
         self.board = BoardShim(self.board_id, params)
@@ -120,6 +128,11 @@ class BoardManager:
             "channel_labels": CHANNEL_LABELS,
             "active_channels": ACTIVE_CHANNELS,
             "serial_port": self.serial_port,
+            "connection": (
+                "native_ble" if self.connected and self.board_id == BoardIds.GANGLION_NATIVE_BOARD.value
+                else "bled112" if self.connected
+                else None
+            ),
         }
 
     def get_recent_window(self, seconds: float) -> np.ndarray | None:

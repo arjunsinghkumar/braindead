@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import ConnectionPanel from "../components/ConnectionPanel.jsx";
 import BatteryIndicator from "../components/BatteryIndicator.jsx";
 
@@ -12,6 +13,31 @@ const electrodeRows = [
 ];
 
 export default function ConnectPage({ board, battery, onConnect, onDisconnect }) {
+  const [preview, setPreview] = useState(null);
+
+  useEffect(() => {
+    let alive = true;
+    const tick = async () => {
+      if (!board?.connected) {
+        if (alive) setPreview(null);
+        return;
+      }
+      try {
+        const r = await fetch("/api/board/preview");
+        const d = await r.json();
+        if (alive) setPreview(d);
+      } catch {
+        if (alive) setPreview(null);
+      }
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => {
+      alive = false;
+      clearInterval(id);
+    };
+  }, [board?.connected]);
+
   return (
     <div className="space-y-6">
       <div className="grid md:grid-cols-2 gap-6">
@@ -21,6 +47,30 @@ export default function ConnectPage({ board, battery, onConnect, onDisconnect })
           onDisconnect={onDisconnect}
         />
         <div className="card">
+          <h2 className="font-semibold text-lg mb-3">Board Data (what we can see)</h2>
+          <dl className="text-sm space-y-2 font-terminal">
+            <Row k="Connected" v={board?.connected ? "yes" : "no"} />
+            <Row k="Connection mode" v={board?.connection || "—"} />
+            <Row k="Sampling rate" v={board?.sampling_rate ? `${board.sampling_rate} Hz` : "—"} />
+            <Row k="EEG channel rows" v={Array.isArray(board?.eeg_channels) ? String(board.eeg_channels.length) : "—"} />
+            <Row k="Active channels" v={board?.active_channels?.join(", ") || "—"} />
+            <Row k="Battery" v={typeof battery === "number" ? `${Math.round(battery)}%` : "—"} />
+            <Row
+              k="Receiving samples (1s window)"
+              v={
+                preview?.connected
+                  ? Object.entries(preview.channels || {})
+                      .map(([ch, info]) => `${ch}:${info.samples}`)
+                      .join("  ")
+                  : "—"
+              }
+            />
+          </dl>
+          <p className="text-xs text-terminal-dim mt-3 font-terminal">
+            Live waveform and band-power metrics become available after you start Stage 1/2/3.
+          </p>
+        </div>
+        <div className="card md:col-span-2">
           <h2 className="font-semibold text-lg mb-3">Electrode Montage</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
@@ -67,6 +117,15 @@ export default function ConnectPage({ board, battery, onConnect, onDisconnect })
           professional for clinical assessment.
         </p>
       </div>
+    </div>
+  );
+}
+
+function Row({ k, v }) {
+  return (
+    <div className="flex justify-between gap-4">
+      <dt className="text-terminal-dim">{k}</dt>
+      <dd className="font-mono text-right">{v}</dd>
     </div>
   );
 }

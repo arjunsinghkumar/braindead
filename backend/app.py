@@ -142,6 +142,36 @@ def board_battery():
     return jsonify({"percent": board.get_battery_percent()})
 
 
+@app.route("/api/board/preview")
+def board_preview():
+    """Return a lightweight snapshot of what data is currently available."""
+    if not board.connected:
+        return jsonify({"connected": False})
+    fs = board.sampling_rate or 200
+    win = board.get_eeg_window(1.0) or {}
+    preview = {}
+    for label, arr in win.items():
+        if arr is None or arr.size == 0:
+            continue
+        preview[label] = {
+            "samples": int(arr.size),
+            "min": float(arr.min()),
+            "max": float(arr.max()),
+            "rms": float((arr.astype(float) ** 2).mean() ** 0.5),
+        }
+    return jsonify({
+        "connected": True,
+        "connection": board.status().get("connection"),
+        "sampling_rate": fs,
+        "channel_labels": board.status().get("channel_labels"),
+        "active_channels": board.status().get("active_channels"),
+        "eeg_channel_count": len(board.eeg_channels or []),
+        "battery_percent": board.get_battery_percent(),
+        "window_sec": 1.0,
+        "channels": preview,
+    })
+
+
 @app.route("/api/sessions")
 def list_sessions():
     db = get_db()
@@ -240,12 +270,11 @@ def handle_connect():
 
 @socketio.on("connect_board")
 def handle_connect_board(data):
-    serial_port = (data or {}).get("serial_port")
-    if not serial_port:
-        emit("error", {"message": "Serial port required (BLED112 dongle)."})
-        return
+    payload = data or {}
+    mac_address = payload.get("mac_address") or os.environ.get("GANGLION_MAC")
+    serial_port = payload.get("serial_port")
     try:
-        status = board.connect(serial_port=serial_port)
+        status = board.connect(serial_port=serial_port, mac_address=mac_address)
         emit("board_status", status, broadcast=True)
         _start_battery_poller()
         # send an immediate battery reading so the UI doesn't wait 10s

@@ -1,35 +1,14 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function ConnectionPanel({ board, onConnect, onDisconnect }) {
-  const [serial, setSerial] = useState("");
-  const [ports, setPorts] = useState([]);
-  const [loadingPorts, setLoadingPorts] = useState(false);
-
-  const refreshPorts = async () => {
-    setLoadingPorts(true);
-    try {
-      const r = await fetch("/api/board/ports");
-      const d = await r.json();
-      setPorts(d.ports || []);
-      if (!serial && d.ports?.length) setSerial(d.ports[0]);
-    } catch {
-      setPorts([]);
-    } finally {
-      setLoadingPorts(false);
-    }
-  };
-
-  useEffect(() => {
-    refreshPorts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const [macAddress, setMacAddress] = useState("");
 
   return (
     <div className="card max-w-xl">
       <h2 className="font-semibold text-lg mb-1">Connect to OpenBCI Ganglion</h2>
       <p className="text-xs text-terminal-dim mb-4 font-terminal">
-        Plug in the BLED112 dongle, power the Ganglion, then pick its serial
-        port below. BrainFlow handles BLE pairing automatically.
+        Pair the Ganglion using normal OS Bluetooth first, then connect here.
+        If you know the device MAC address, enter it to use native BLE mode.
       </p>
 
       {board?.connected ? (
@@ -40,7 +19,7 @@ export default function ConnectionPanel({ board, onConnect, onDisconnect }) {
               ({board.sampling_rate} Hz)
             </div>
             <div className="text-xs text-terminal-dim mt-1">
-              Port: <span className="font-mono">{board.serial_port}</span>
+              Mode: <span className="font-mono">{board.connection || "—"}</span>
             </div>
             <div className="text-xs text-terminal-dim">
               Channels: {board.active_channels?.join(", ")}
@@ -55,50 +34,25 @@ export default function ConnectionPanel({ board, onConnect, onDisconnect }) {
           <div>
             <div className="flex items-center justify-between mb-1">
               <label className="text-xs text-terminal-dim font-terminal">
-                Serial port (BLED112 dongle)
+                Ganglion MAC address (optional)
               </label>
-              <button
-                onClick={refreshPorts}
-                className="text-xs text-terminal-accent hover:underline disabled:opacity-50 font-terminal"
-                disabled={loadingPorts}
-              >
-                {loadingPorts ? "scanning…" : "↻ rescan"}
-              </button>
             </div>
-            {ports.length > 0 ? (
-              <select
-                className="w-full bg-ink-800 px-3 py-2 rounded text-sm font-mono border border-terminal-accent/60 focus:outline-none focus:ring-2 focus:ring-terminal-accent/30"
-                value={serial}
-                onChange={(e) => setSerial(e.target.value)}
-              >
-                {ports.map((p) => (
-                  <option key={p} value={p}>
-                    {p}
-                  </option>
-                ))}
-              </select>
-            ) : (
-              <input
-                type="text"
-                placeholder="/dev/cu.usbmodem* or COM4"
-                className="w-full bg-ink-800 px-3 py-2 rounded text-sm font-mono border border-terminal-accent/60 focus:outline-none focus:ring-2 focus:ring-terminal-accent/30"
-                value={serial}
-                onChange={(e) => setSerial(e.target.value)}
-              />
-            )}
-            {ports.length === 0 && (
-              <p className="text-xs text-terminal-dim mt-1 font-terminal">
-                No serial ports detected. Plug the BLED112 dongle in and click
-                rescan, or type the path manually.
-              </p>
-            )}
+            <input
+              type="text"
+              placeholder="AA:BB:CC:DD:EE:FF"
+              className="w-full bg-ink-800 px-3 py-2 rounded text-sm font-mono border border-terminal-accent/60 focus:outline-none focus:ring-2 focus:ring-terminal-accent/30"
+              value={macAddress}
+              onChange={(e) => setMacAddress(e.target.value)}
+            />
+            <p className="text-xs text-terminal-dim mt-1 font-terminal">
+              Leave blank to use default connection settings (or server env `GANGLION_MAC`).
+            </p>
           </div>
           <button
             className="btn-primary w-full"
-            disabled={!serial.trim()}
-            onClick={() => onConnect({ serial_port: serial.trim() })}
+            onClick={() => onConnect({ mac_address: macAddress.trim() || undefined })}
           >
-            Pair &amp; Connect
+            Connect
           </button>
         </div>
       )}

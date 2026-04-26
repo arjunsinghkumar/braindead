@@ -1,6 +1,7 @@
 import { NavLink, Link } from "react-router-dom";
 import useSocket from "../hooks/useSocket.js";
 import BatteryIndicator from "./BatteryIndicator.jsx";
+import BrainDeadLogo from "./BrainDeadLogo.jsx";
 
 const tabs = [
   { to: "/", label: "Connect" },
@@ -17,9 +18,11 @@ export default function Layout({ children, board, battery }) {
       <header className="border-b border-terminal-accent bg-black/70 backdrop-blur">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl focus-orb shadow-glow" />
+            <div className="w-9 h-9 grid place-items-center rounded-xl border border-terminal-accent/70 shadow-glow">
+              <BrainDeadLogo className="w-6 h-6 text-terminal-text" />
+            </div>
             <div>
-              <div className="font-bold tracking-wide font-terminal">NeuroFlow</div>
+              <div className="font-bold tracking-wide font-terminal">brainDead</div>
               <div className="text-xs text-terminal-dim">
                 OpenBCI Ganglion Neurofeedback
               </div>
