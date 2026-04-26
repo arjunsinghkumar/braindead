@@ -1,0 +1,7 @@
+flask>=3.0
+flask-socketio>=5.3
+flask-cors>=4.0
+eventlet>=0.35
+brainflow>=5.10
+sqlalchemy>=2.0
+numpy>=1.24

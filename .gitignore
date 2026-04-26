@@ -1,0 +1,31 @@
+.DS_Store
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtualenvs (never commit)
+.venv/
+backend/.venv/
+venv/
+env/
+
+# Node / Vite
+node_modules/
+frontend/node_modules/
+frontend/dist/
+dist/
+
+# Local databases / artifacts
+*.db
+backend/neuroflow.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
