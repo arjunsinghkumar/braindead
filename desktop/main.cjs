@@ -31,7 +31,7 @@ function createMainWindow(url) {
   mainWindow = new BrowserWindow({
     width: 1280,
     height: 800,
-    title: "NeuroFlow",
+    title: "brainDead",
     show: false,
     webPreferences: {
       contextIsolation: true,
@@ -51,7 +51,7 @@ function createMainWindow(url) {
 }
 
 function showErrorAndQuit(message) {
-  dialog.showErrorBox("NeuroFlow Desktop", message);
+  dialog.showErrorBox("brainDead Desktop", message);
   app.quit();
 }
 

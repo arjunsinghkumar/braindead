@@ -3,6 +3,8 @@ from __future__ import annotations
 import os
 import sys
 import threading
+import json
+import subprocess
 from pathlib import Path
 
 # Use eventlet for async Socket.IO if available.
@@ -170,6 +172,66 @@ def board_preview():
         "window_sec": 1.0,
         "channels": preview,
     })
+
+
+@app.route("/api/bluetooth/devices")
+def bluetooth_devices():
+    """Return nearby/paired bluetooth devices (macOS only).
+
+    Note: this is best-effort. Some devices may not expose addresses depending
+    on OS privacy restrictions.
+    """
+    if sys.platform != "darwin":
+        return jsonify({"ok": False, "error": "bluetooth scan only supported on macOS"}), 400
+    try:
+        proc = subprocess.run(
+            ["system_profiler", "SPBluetoothDataType", "-json"],
+            capture_output=True,
+            text=True,
+            timeout=8,
+            check=False,
+        )
+        raw = proc.stdout or "{}"
+        data = json.loads(raw)
+    except Exception as e:  # pragma: no cover
+        return jsonify({"ok": False, "error": str(e)}), 500
+
+    def walk(obj):
+        if isinstance(obj, dict):
+            for v in obj.values():
+                yield from walk(v)
+            # heuristics: many nodes have these keys
+            name = obj.get("_name") or obj.get("device_name") or obj.get("name")
+            addr = obj.get("device_address") or obj.get("address") or obj.get("bd_addr")
+            if name or addr:
+                yield {"name": name, "address": addr, "raw": obj}
+        elif isinstance(obj, list):
+            for it in obj:
+                yield from walk(it)
+
+    seen = set()
+    devices = []
+    for d in walk(data):
+        name = (d.get("name") or "").strip()
+        addr = (d.get("address") or "").strip()
+        key = (name, addr)
+        if key in seen:
+            continue
+        seen.add(key)
+        score = 0
+        hay = (name + " " + addr).lower()
+        if "ganglion" in hay:
+            score += 5
+        if "openbci" in hay or "open bci" in hay:
+            score += 5
+        devices.append({
+            "name": name or None,
+            "address": addr or None,
+            "likely_ganglion": score >= 5,
+        })
+
+    devices.sort(key=lambda x: (not x["likely_ganglion"], x["name"] or ""))
+    return jsonify({"ok": True, "devices": devices})
 
 
 @app.route("/api/sessions")
